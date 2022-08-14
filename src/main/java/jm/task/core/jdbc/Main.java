@@ -33,17 +33,11 @@ public class Main {
 
         // 3. Получение всех User из базы и вывод в консоль (должен быть переопределен toString в классе User)
         List<User> usersList = userService.getAllUsers();
-        for (User user1 : usersList)
-            System.out.println(user1);
+        for (User userFromDB : usersList)
+            System.out.println(userFromDB);
 
         // 4. Очистка таблицы User(ов)
         userService.cleanUsersTable();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         // 5. Удаление таблицы
         userService.dropUsersTable();
