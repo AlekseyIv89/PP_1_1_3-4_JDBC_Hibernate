@@ -39,7 +39,8 @@ public class UserDaoJDBCImpl implements UserDao {
                     "id BIGINT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, " +
                     "user_name VARCHAR(255) NOT NULL, " +
                     "user_lastname VARCHAR(255) NOT NULL, " +
-                    "user_age TINYINT NOT NULL);";
+                    "user_age TINYINT NOT NULL, " +
+                    "CHECK (user_age >= 0));";
             statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +50,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void dropUsersTable() {
         useDatabase();
 
-        String sql = "DROP TABLE IF EXISTS users";
+        String sql = "DROP TABLE IF EXISTS users;";
 
         try (Statement statement = CONNECTION.createStatement()) {
             statement.execute(sql);
@@ -59,7 +60,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        String sql = "INSERT INTO users (user_name, user_lastname, user_age) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (user_name, user_lastname, user_age) VALUES (?, ?, ?);";
 
         try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(sql)) {
             preparedStatement.setString(1, name);
@@ -73,7 +74,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void removeUserById(long id) {
-        String sql = "DELETE FROM users WHERE id=?";
+        String sql = "DELETE FROM users WHERE id=?;";
 
         try (PreparedStatement preparedStatement = CONNECTION.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
@@ -86,7 +87,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> usersList = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users;";
 
         try (Statement statement = CONNECTION.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
@@ -105,7 +106,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        String sql = "DELETE FROM users";
+        String sql = "DELETE FROM users;";
 
         try (Statement statement = CONNECTION.createStatement()) {
             statement.execute(sql);
