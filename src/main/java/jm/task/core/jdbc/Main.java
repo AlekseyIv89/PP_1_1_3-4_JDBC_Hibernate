@@ -1,12 +1,8 @@
 package jm.task.core.jdbc;
 
-import jm.task.core.jdbc.dao.UserDao;
-import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,9 +31,6 @@ public class Main {
 
         // 3. Получение всех User из базы и вывод в консоль (должен быть переопределен toString в классе User)
         userService.getAllUsers().forEach(System.out::println);
-
-        UserDao userDao = new UserDaoHibernateImpl();
-        userDao.getAllUsers().forEach(System.out::println);
 
         // 4. Очистка таблицы User(ов)
         userService.cleanUsersTable();

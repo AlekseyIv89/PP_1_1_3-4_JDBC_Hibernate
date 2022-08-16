@@ -13,20 +13,41 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
+    private void createDatabaseIfNotExists() {
+        String sql = "USE people";
+        session.createSQLQuery(sql);
+    }
+
+    private void useDatabase() {
+        String sql = "CREATE DATABASE IF NOT EXISTS people";
+        session.createSQLQuery(sql);
+    }
 
     @Override
     public void createUsersTable() {
+        createDatabaseIfNotExists();
+        useDatabase();
 
+        String sql = "CREATE TABLE IF NOT EXISTS users (" +
+                "id BIGINT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, " +
+                "user_name VARCHAR(255) NOT NULL, " +
+                "user_lastname VARCHAR(255) NOT NULL, " +
+                "user_age TINYINT NOT NULL, " +
+                "CHECK (user_age >= 0))";
+        session.createSQLQuery(sql);
     }
 
     @Override
     public void dropUsersTable() {
+        useDatabase();
 
+        String sql = "DROP TABLE IF EXISTS users";
+        session.createSQLQuery(sql);
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-
+        session.save(new User(name, lastName, age));
     }
 
     @Override
@@ -36,7 +57,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        return session.createQuery("SELECT * FROM users", User.class).getResultList();
+        return session.createQuery("FROM users", User.class).getResultList();
     }
 
     @Override

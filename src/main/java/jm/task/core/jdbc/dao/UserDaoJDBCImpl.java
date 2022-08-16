@@ -23,8 +23,9 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     private void createDatabaseIfNotExists() {
+        String sql = "CREATE DATABASE IF NOT EXISTS people;";
         try (Statement statement = CONNECTION.createStatement()) {
-            statement.execute("CREATE DATABASE IF NOT EXISTS people;");
+            statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
