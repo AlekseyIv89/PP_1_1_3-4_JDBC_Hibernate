@@ -26,7 +26,7 @@ public final class Util {
         configuration.setProperty("hibernate.connection.username", DB_USERNAME);
         configuration.setProperty("hibernate.connection.password", DB_PASSWORD);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        configuration.setProperty("show_sql", "true");
+        configuration.setProperty("hibernate.show_sql", "true");
 
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties());

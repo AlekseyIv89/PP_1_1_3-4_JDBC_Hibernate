@@ -1,5 +1,7 @@
 package jm.task.core.jdbc;
 
+import jm.task.core.jdbc.dao.UserDao;
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
@@ -32,9 +34,10 @@ public class Main {
         System.out.println("User с именем - " + user.getName() + " добавлен в базу данных");
 
         // 3. Получение всех User из базы и вывод в консоль (должен быть переопределен toString в классе User)
-        List<User> usersList = userService.getAllUsers();
-        for (User userFromDB : usersList)
-            System.out.println(userFromDB);
+        userService.getAllUsers().forEach(System.out::println);
+
+        UserDao userDao = new UserDaoHibernateImpl();
+        userDao.getAllUsers().forEach(System.out::println);
 
         // 4. Очистка таблицы User(ов)
         userService.cleanUsersTable();
