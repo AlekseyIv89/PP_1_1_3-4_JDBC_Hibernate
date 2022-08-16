@@ -1,19 +1,36 @@
 package jm.task.core.jdbc.util;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public final class Util {
-    private static Util instance = null;
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "root";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/";
 
+    private static final SessionFactory sessionFactory;
+
     static {
         loadDriver();
+    }
+
+    static {
+        Configuration configuration = new Configuration();
+        configuration.setProperty("hibernate.connection.driver_class", DB_DRIVER);
+        configuration.setProperty("hibernate.connection.url", DB_URL);
+        configuration.setProperty("hibernate.connection.username", DB_USERNAME);
+        configuration.setProperty("hibernate.connection.password", DB_PASSWORD);
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        configuration.setProperty("show_sql", "true");
+
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties());
+        sessionFactory = configuration.buildSessionFactory(builder.build());
     }
 
     private static void loadDriver() {
@@ -24,16 +41,6 @@ public final class Util {
         }
     }
 
-    private Util() {
-    }
-
-    public static Util getInstance() {
-        if (Objects.isNull(instance)) {
-            instance = new Util();
-        }
-        return instance;
-    }
-
     public Connection getConnection() {
         Connection connection;
         try {
@@ -42,5 +49,9 @@ public final class Util {
             throw new RuntimeException(e);
         }
         return connection;
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 }
