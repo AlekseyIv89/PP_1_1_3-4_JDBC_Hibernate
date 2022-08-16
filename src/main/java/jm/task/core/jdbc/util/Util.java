@@ -15,7 +15,6 @@ public final class Util {
     private static final String DB_PASSWORD = "root";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/";
 
-//    ?allowMultiQueries=true
 //    private static final SessionFactory sessionFactory;
 
     static {
