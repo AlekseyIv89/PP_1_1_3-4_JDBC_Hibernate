@@ -2,8 +2,7 @@ package jm.task.core.jdbc.model;
 
 import javax.persistence.*;
 
-@Entity
-@Table (name = "users")
+@Table
 public class User {
     @Id
     private Long id;
@@ -27,8 +26,6 @@ public class User {
         this.age = age;
     }
 
-    @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -37,7 +34,6 @@ public class User {
         this.id = id;
     }
 
-    @Column (name = "user_name")
     public String getName() {
         return name;
     }
@@ -46,7 +42,6 @@ public class User {
         this.name = name;
     }
 
-    @Column (name = "user_lastname")
     public String getLastName() {
         return lastName;
     }
@@ -55,7 +50,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Column (name = "user_age")
     public Byte getAge() {
         return age;
     }
