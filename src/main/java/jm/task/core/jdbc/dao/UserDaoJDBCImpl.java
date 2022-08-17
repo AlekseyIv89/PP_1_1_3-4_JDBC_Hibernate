@@ -14,12 +14,24 @@ public class UserDaoJDBCImpl implements UserDao {
 
     private void createDatabaseIfNotExists() {
         String sql = "CREATE DATABASE IF NOT EXISTS people;";
-        try (Connection connection = Util.getConnection()) {
-            connection.createStatement().execute("START TRANSACTION;");
+
+        Connection connection = Util.getConnection();
+        try {
             connection.createStatement().execute(sql);
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -32,60 +44,104 @@ public class UserDaoJDBCImpl implements UserDao {
                 "user_age TINYINT NOT NULL, " +
                 "CHECK (user_age >= 0));";
 
-        try (Connection connection = Util.getConnection()) {
-            connection.createStatement().execute("START TRANSACTION;");
+        Connection connection = Util.getConnection();
+        try {
             connection.createStatement().execute("USE people;");
             connection.createStatement().execute(sql);
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users;";
 
-        try (Connection connection = Util.getConnection()) {
-            connection.createStatement().execute("START TRANSACTION;");
+        Connection connection = Util.getConnection();
+        try {
             connection.createStatement().execute("USE people;");
             connection.createStatement().execute(sql);
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
         String sql = "INSERT INTO users (user_name, user_lastname, user_age) VALUES (?, ?, ?);";
 
-        try (Connection connection = Util.getConnection()) {
+        Connection connection = Util.getConnection();
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
 
-            connection.createStatement().execute("START TRANSACTION;");
             connection.createStatement().execute("USE people;");
             preparedStatement.execute();
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void removeUserById(long id) {
         String sql = "DELETE FROM users WHERE id=?;";
 
-        try (Connection connection = Util.getConnection()) {
+        Connection connection = Util.getConnection();
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, id);
 
-            connection.createStatement().execute("START TRANSACTION;");
             connection.createStatement().execute("USE people;");
             preparedStatement.execute();
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -93,8 +149,8 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> usersList = new ArrayList<>();
         String sql = "SELECT * FROM users;";
 
-        try (Connection connection = Util.getConnection()) {
-            connection.createStatement().execute("START TRANSACTION;");
+        Connection connection = Util.getConnection();
+        try {
             connection.createStatement().execute("USE people;");
 
             try (ResultSet resultSet = connection.createStatement().executeQuery(sql)) {
@@ -107,9 +163,20 @@ public class UserDaoJDBCImpl implements UserDao {
                 }
             }
 
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return usersList;
@@ -118,13 +185,24 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         String sql = "DELETE FROM users;";
 
-        try (Connection connection = Util.getConnection()) {
-            connection.createStatement().execute("START TRANSACTION;");
+        Connection connection = Util.getConnection();
+        try {
             connection.createStatement().execute("USE people;");
             connection.createStatement().execute(sql);
-            connection.createStatement().execute("COMMIT;");
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
