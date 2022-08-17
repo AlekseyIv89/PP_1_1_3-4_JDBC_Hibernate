@@ -54,7 +54,7 @@ public final class Util {
         return connection;
     }
 
-//    public SessionFactory getSessionFactory() {
+//    public static SessionFactory getSessionFactory() {
 //        return sessionFactory;
 //    }
 }
