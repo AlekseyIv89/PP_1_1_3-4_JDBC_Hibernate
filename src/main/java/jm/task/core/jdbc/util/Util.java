@@ -29,10 +29,11 @@ public final class Util {
         configuration.setProperty("hibernate.connection.password", DB_PASSWORD);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.show_sql", "true");
+        configuration.addAnnotatedClass(User.class);
 
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties());
-        sessionFactory = configuration.addAnnotatedClass(User.class).buildSessionFactory(builder.build());
+        sessionFactory = configuration.buildSessionFactory(builder.build());
     }
 
     private static void loadDriverJDBC() {
